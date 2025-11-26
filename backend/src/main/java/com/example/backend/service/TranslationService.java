@@ -23,12 +23,14 @@ public class TranslationService {
                 .stream()
                 .map(t -> TranslationDto.builder()
                         .id(t.getId())
+                        .bookId(t.getBook().getId())
                         .translator(t.getTranslator())
                         .publisher(t.getPublisher())
                         .year(t.getPublishedYear())
                         .description(t.getDescription())
                         .status(t.getStatus().name())
                         .imagePath(t.getImagePath())
+                        .externalLink(t.getExternalLink())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -49,6 +51,7 @@ public class TranslationService {
                 .publisher(request.getPublisher())
                 .publishedYear(request.getYear())
                 .description(request.getDescription())
+                .externalLink(request.getExternalLink())
                 .uploader(uploader)
                 .status(ApprovalStatus.PENDING)
                 .createdAt(LocalDateTime.now())

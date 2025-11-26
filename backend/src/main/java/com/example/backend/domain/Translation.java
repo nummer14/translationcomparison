@@ -7,10 +7,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Getter @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Translation {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JsonIgnore
@@ -24,6 +28,9 @@ public class Translation {
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    @Column(name = "external_link", columnDefinition = "TEXT")
+    private String externalLink;
 
     @Enumerated(EnumType.STRING)
     private ApprovalStatus status;

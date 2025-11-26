@@ -1,13 +1,13 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8080/api', // 백엔드 주소
+  baseURL: 'http://localhost:8080/api',
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 });
 
-// 요청 보낼 때마다 토큰이 있으면 헤더에 끼워넣기
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -15,5 +15,15 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 403) {
+      console.log("권한이 없습니다.");
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default api;

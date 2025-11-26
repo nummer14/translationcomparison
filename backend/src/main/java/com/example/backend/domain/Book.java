@@ -11,12 +11,18 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = "translations")
 public class Book {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String title;
     private String originalAuthor;
+
+    private String category;
+
+    @Column(name = "image_path")
+    private String imagePath;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     @Builder.Default

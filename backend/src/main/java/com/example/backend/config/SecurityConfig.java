@@ -4,7 +4,7 @@ import com.example.backend.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod; // 이거 꼭 필요
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -45,6 +45,11 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/translations/*/comments").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/books/*/translations").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/bookmarks/**").authenticated()
+                        .requestMatchers("/api/users/me").authenticated()
                         .requestMatchers("/**").permitAll()
                 )
                 .oauth2Login(oauth2 -> oauth2

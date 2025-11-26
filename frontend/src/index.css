@@ -1,9 +1,1 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  a {
-    @apply text-inherit no-underline;
-  }
-}
+@import "tailwindcss";

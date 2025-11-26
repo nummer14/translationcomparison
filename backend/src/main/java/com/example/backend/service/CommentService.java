@@ -39,19 +39,39 @@ public class CommentService {
 
     @Transactional(readOnly = true)
     public List<CommentDto> getComments(Long translationId) {
-        Translation translation = translationRepository.findById(translationId)
-                .orElseThrow(() -> new RuntimeException("Translation not found"));
-
         return commentRepository.findAll().stream()
                 .filter(c -> c.getTranslation().getId().equals(translationId))
                 .map(c -> CommentDto.builder()
                         .id(c.getId())
                         .translationId(c.getTranslation().getId())
+                        .userId(c.getUser().getId()) // ★ 추가됨
                         .userNickname(c.getUser().getNickname())
                         .content(c.getContent())
                         .rating(c.getRating())
                         .createdAt(c.getCreatedAt())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void updateComment(Long commentId, CommentDto request, User user) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
+
+        if (!comment.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("권한이 없습니다.");
+        }
+    }
+
+    @Transactional
+    public void deleteComment(Long commentId, User user) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
+
+        if (!comment.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("권한이 없습니다.");
+        }
+
+        commentRepository.delete(comment);
     }
 }

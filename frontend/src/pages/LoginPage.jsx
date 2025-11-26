@@ -10,61 +10,55 @@ export default function LoginPage() {
     try {
       const res = await api.post("/auth/login", { email, password });
       localStorage.setItem("token", res.data.accessToken);
-      window.location.href = "/"; // 홈으로 이동
+      window.location.href = "/";
     } catch (err) {
-      alert("로그인 실패! 아이디/비번을 확인하세요.");
+      alert("로그인 실패! 이메일과 비밀번호를 확인하세요.");
     }
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white p-8 rounded shadow mt-10">
-      <h2 className="text-2xl font-bold mb-6 text-center">로그인</h2>
+    <div className="max-w-md mx-auto mt-10 bg-white p-8 rounded-xl shadow-lg border border-gray-100">
+      <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">로그인</h2>
       <form onSubmit={handleLogin} className="space-y-4">
-        <input
-          type="email"
-          placeholder="이메일"
-          className="w-full border p-2 rounded"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="비밀번호"
-          className="w-full border p-2 rounded"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">이메일</label>
+          <input
+            type="email"
+            className="w-full border border-gray-300 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">비밀번호</label>
+          <input
+            type="password"
+            className="w-full border border-gray-300 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-sm">
           로그인
-        </button>
-        {/* ▼▼▼ 이 부분 추가해서 테스트용 회원가입 버튼 만드세요 ▼▼▼ */}
-        <button
-          type="button"
-          onClick={async () => {
-            try {
-              await api.post("/auth/signup", {
-                email,
-                password,
-                nickname: "테스트유저",
-              });
-              alert("가입 성공! 이제 로그인하세요.");
-            } catch (e) {
-              alert("가입 실패 (이미 존재함)");
-            }
-          }}
-          className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 mt-2"
-        >
-          (테스트용) 바로 회원가입
         </button>
       </form>
 
-      <div className="mt-4 text-center">
-        <p className="text-gray-500 text-sm mb-2">또는</p>
+      <div className="mt-6">
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-300"></div>
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-white text-gray-500">간편 로그인</span>
+          </div>
+        </div>
+
         <a
           href="http://localhost:8080/oauth2/authorization/google"
-          className="block w-full bg-red-500 text-white py-2 rounded hover:bg-red-600"
+          className="mt-4 flex items-center justify-center w-full border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 py-2.5 rounded-lg transition font-medium"
         >
-          구글로 시작하기
+          <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-5 h-5 mr-2" alt="Google" />
+          Google로 시작하기
         </a>
       </div>
     </div>

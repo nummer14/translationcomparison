@@ -20,7 +20,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-    private final AuthenticationManager authenticationManager; // 수정됨
+    private final AuthenticationManager authenticationManager;
 
     @Transactional
     public void signUp(AuthDto.SignUpRequest request) {

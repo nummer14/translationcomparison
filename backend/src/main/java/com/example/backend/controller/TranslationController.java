@@ -1,13 +1,15 @@
 package com.example.backend.controller;
 
+import com.example.backend.domain.Translation;
 import com.example.backend.domain.User;
 import com.example.backend.dto.TranslationDto;
-import com.example.backend.repository.UserRepository; // 필수 추가
+import com.example.backend.repository.TranslationRepository;
+import com.example.backend.repository.UserRepository;
 import com.example.backend.service.TranslationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails; // 필수 추가
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,10 +21,28 @@ public class TranslationController {
 
     private final TranslationService translationService;
     private final UserRepository userRepository;
+    private final TranslationRepository translationRepository;
 
     @GetMapping("/books/{bookId}/translations")
     public ResponseEntity<List<TranslationDto>> getTranslations(@PathVariable Long bookId) {
         return ResponseEntity.ok(translationService.getApprovedTranslations(bookId));
+    }
+
+    @GetMapping("/translations/{id}")
+    public ResponseEntity<TranslationDto> getTranslationDetail(@PathVariable Long id) {
+        Translation t = translationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Not found"));
+
+        return ResponseEntity.ok(TranslationDto.builder()
+                .id(t.getId())
+                .bookId(t.getBook().getId())
+                .translator(t.getTranslator())
+                .publisher(t.getPublisher())
+                .year(t.getPublishedYear())
+                .description(t.getDescription())
+                .imagePath(t.getImagePath())
+                .externalLink(t.getExternalLink())
+                .build());
     }
 
     @PostMapping("/books/{bookId}/translations")
@@ -39,6 +59,12 @@ public class TranslationController {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         translationService.proposeTranslation(bookId, request, user);
-        return ResponseEntity.ok("번역본 등록 요청이 완료되었습니다. 관리자 승인을 기다리세요.");
+        return ResponseEntity.ok("번역본 등록 요청이 완료되었습니다.");
+    }
+
+    @DeleteMapping("/translations/{translationId}")
+    public ResponseEntity<Void> deleteTranslation(@PathVariable Long translationId) {
+        translationRepository.deleteById(translationId);
+        return ResponseEntity.noContent().build();
     }
 }
