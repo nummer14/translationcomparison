@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  translate-db:
+    image: postgres:15
+    container_name: translate-db
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  translate-app:
+    container_name: translate-app
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - translate-db
+    environment:
+      # DB 설정
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://translate-db:5432/${DB_NAME}
+      - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+
+      # 앱 설정
+      - FILE_UPLOAD_DIR=${FILE_UPLOAD_DIR}
+      - JWT_SECRET=${JWT_SECRET}
+      - FRONTEND_URL=${FRONTEND_URL}
+
+      # OAuth 설정
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
+      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+
+    volumes:
+      - ./uploads:/app/uploads
+
+volumes:
+  postgres_data:
