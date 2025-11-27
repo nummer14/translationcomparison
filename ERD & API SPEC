@@ -1,0 +1,78 @@
+# ERD (Text Version)
+
+## Entities
+
+### User
+- id (PK)
+- username
+- email
+- password
+- created_at
+
+### Post
+- id (PK)
+- user_id (FK -> User.id)
+- title
+- content
+- created_at
+
+### Comment
+- id (PK)
+- post_id (FK -> Post.id)
+- user_id (FK -> User.id)
+- content
+- created_at
+
+### Vote
+- id (PK)
+- post_id (FK -> Post.id)
+- user_id (FK -> User.id)
+- type (UP/DOWN)
+
+## Relationships
+- User 1:N Post
+- User 1:N Comment
+- User 1:N Vote
+- Post 1:N Comment
+- Post 1:N Vote
+
+
+# API Specification
+
+## Auth
+### POST /auth/register
+- Request: username, email, password
+- Response: user info
+
+### POST /auth/login
+- Request: email, password
+- Response: JWT token
+
+## Users
+### GET /users/{id}
+- Response: user profile
+
+## Posts
+### GET /posts
+- Query: page, size
+- Response: list of posts
+
+### POST /posts
+- Auth required
+- Body: title, content
+
+### GET /posts/{id}
+- Response: post detail
+
+### DELETE /posts/{id}
+- Auth required
+
+## Comments
+### POST /posts/{id}/comments
+- Body: content
+
+### DELETE /comments/{id}
+
+## Votes
+### POST /posts/{id}/vote
+- Body: type (UP/DOWN)
