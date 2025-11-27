@@ -42,7 +42,6 @@ export default function LoginPage() {
           로그인
         </button>
       </form>
-
       <div className="mt-6">
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
@@ -52,7 +51,6 @@ export default function LoginPage() {
             <span className="px-2 bg-white text-gray-500">간편 로그인</span>
           </div>
         </div>
-
         <a
           href="http://localhost:8080/oauth2/authorization/google"
           className="mt-4 flex items-center justify-center w-full border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 py-2.5 rounded-lg transition font-medium"

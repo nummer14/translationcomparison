@@ -16,8 +16,6 @@ export default function TranslationFormPage() {
     formData.append('publisher', e.target.publisher.value);
     formData.append('year', e.target.year.value);
     formData.append('description', e.target.description.value);
-    
-    // ★ 링크 추가
     formData.append('externalLink', e.target.externalLink.value);
     
     if (e.target.coverImage.files[0]) {
@@ -40,8 +38,6 @@ export default function TranslationFormPage() {
     <div className="max-w-lg mx-auto bg-white p-8 rounded-xl shadow-lg border border-gray-100 mt-10">
       <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-4">📝 새 번역본 등록 요청</h2>
       <form onSubmit={handleSubmit} className="space-y-5">
-        
-        {/* 기존 입력 필드들 */}
         <div>
           <label className="block text-sm font-bold text-gray-700 mb-1">출판사</label>
           <input name="publisher" className="w-full border border-gray-300 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="예: 민음사" required />
@@ -55,7 +51,6 @@ export default function TranslationFormPage() {
           <input name="year" type="number" className="w-full border border-gray-300 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="2023" required />
         </div>
 
-        {/* ★★★ [추가] 구매/미리보기 링크 ★★★ */}
         <div>
           <label className="block text-sm font-bold text-gray-700 mb-1">구매/미리보기 링크 (선택)</label>
           <input name="externalLink" className="w-full border border-gray-300 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="예: 알라딘, Yes24, 교보문고 도서 링크 URL" />

@@ -7,7 +7,6 @@ export default function BookList() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 백엔드에서 책 목록 가져오기
     api
       .get("/books")
       .then((res) => setBooks(res.data))
@@ -28,15 +27,14 @@ export default function BookList() {
         {books.map((book) => (
           <div
             key={book.id}
-            onClick={() => navigate(`/books/${book.id}`)} // 👈 클릭 시 상세 페이지 이동
+            onClick={() => navigate(`/books/${book.id}`)}
             style={{
               border: "1px solid #ddd",
               padding: "10px",
               width: "200px",
-              cursor: "pointer", // 👈 마우스 올리면 손가락 모양
+              cursor: "pointer",
             }}
           >
-            {/* 이미지가 없으면 회색 박스 */}
             {book.coverImageUrl ? (
               <img
                 src={book.coverImageUrl}

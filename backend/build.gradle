@@ -25,37 +25,21 @@ repositories {
 }
 
 dependencies {
-// --- Web / Validation ---
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-
-// --- Security / OAuth2 ---
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-
-// --- JPA & PostgreSQL ---
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'org.postgresql:postgresql'
-
-// --- JWT (JJWT 0.12.x) ---
     implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
-
-// --- Lombok ---
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-
-// Optional: 빌드 시 application.yml 자동 인텔리센스
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-
-// --- DevTools ---
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-
-// --- Tests ---
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 

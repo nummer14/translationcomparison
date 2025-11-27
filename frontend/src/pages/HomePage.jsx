@@ -23,15 +23,13 @@ function BookCard({ book, onDelete, onUpdate, isAdmin, isBookmarked, onToggleBoo
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(book.title);
   const [editAuthor, setEditAuthor] = useState(book.originalAuthor);
-  
-  // ★ 카테고리 수정 상태 추가
   const [editCategory, setEditCategory] = useState(book.category || 'ANGLO');
 
   const handleUpdate = () => {
     api.put(`/books/${book.id}`, { 
         title: editTitle, 
         originalAuthor: editAuthor,
-        category: editCategory // ★ 수정된 카테고리 전송
+        category: editCategory
     })
        .then(() => { alert("수정 완료"); setIsEditing(false); onUpdate(); })
        .catch(() => alert("수정 실패"));
@@ -41,8 +39,6 @@ function BookCard({ book, onDelete, onUpdate, isAdmin, isBookmarked, onToggleBoo
     return (
       <div className="bg-white p-4 rounded shadow border border-blue-500 text-sm flex flex-col gap-2 z-50 absolute inset-0">
         <p className="font-bold text-gray-500 text-xs mb-1">책 정보 수정</p>
-        
-        {/* ★ 카테고리 선택 박스 추가 */}
         <select 
           className="border p-1 w-full rounded bg-gray-50"
           value={editCategory} 
@@ -67,10 +63,7 @@ function BookCard({ book, onDelete, onUpdate, isAdmin, isBookmarked, onToggleBoo
   
   return (
     <div className="group relative flex flex-col w-full">
-      {/* 책 표지 영역 */}
       <div className="relative w-full aspect-[2/3] rounded-r-lg shadow-md transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-2xl overflow-hidden bg-gray-100">
-        
-        {/* ★★★ [수정됨] 관리자 버튼: 항상 잘 보이게 상단 고정 (배경색 추가) ★★★ */}
         {isAdmin && (
           <div className="absolute top-0 right-0 p-1 flex gap-1 z-40 bg-black/50 rounded-bl-lg backdrop-blur-sm">
             <button 
@@ -91,7 +84,6 @@ function BookCard({ book, onDelete, onUpdate, isAdmin, isBookmarked, onToggleBoo
         )}
 
         <Link to={`/books/${book.id}`} className="block w-full h-full">
-          {/* 찜하기 버튼 */}
           <button 
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); onToggleBookmark(book.id); }}
             className="absolute top-2 left-2 z-30 hover:scale-110 transition drop-shadow-md"
@@ -113,7 +105,6 @@ function BookCard({ book, onDelete, onUpdate, isAdmin, isBookmarked, onToggleBoo
         </Link>
       </div>
 
-      {/* 책 정보 */}
       <div className="mt-4 text-center px-1">
         <h3 className="text-base font-bold text-gray-800 leading-tight truncate hover:text-blue-600 transition">
           <Link to={`/books/${book.id}`}>{book.title}</Link>
@@ -191,15 +182,9 @@ export default function HomePage() {
     }
   };
 
-  // ★★★ 여기가 수정된 검색 로직입니다 ★★★
   const filteredBooks = books.filter((book) => {
     const lowerTerm = searchTerm.toLowerCase();
-    
-    // 1. 카테고리 일치 여부
-    const matchCategory = activeTab === 'ALL' || book.category === activeTab;
-    
-    // 2. 검색어 일치 여부 (제목 OR 원작작가 OR 번역가)
-    // book.translations 배열을 순회하며 번역가 이름이 검색어를 포함하는지 확인 (some)
+    const matchCategory = activeTab === 'ALL' || book.category === activeTab;    
     const matchTranslator = book.translations && book.translations.some(
       t => t.translator && t.translator.toLowerCase().includes(lowerTerm)
     );
@@ -207,7 +192,7 @@ export default function HomePage() {
     const matchSearch = 
       book.title.toLowerCase().includes(lowerTerm) || 
       book.originalAuthor.toLowerCase().includes(lowerTerm) ||
-      matchTranslator; // 번역가 검색 결과 포함
+      matchTranslator;
 
     return matchCategory && matchSearch;
   });
@@ -215,7 +200,6 @@ export default function HomePage() {
   return (
     <div className="max-w-7xl mx-auto px-6 pb-20">
       
-      {/* 1. 배너 */}
       <div className="relative bg-gray-900 rounded-2xl overflow-hidden shadow-2xl mb-12">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80')] bg-cover bg-center opacity-50"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
@@ -225,7 +209,7 @@ export default function HomePage() {
             Nuance <span className="text-lg font-sans font-normal opacity-80 block mt-2">번역의 차이를 발견하다</span>
           </h1>
           <p className="text-gray-200 mb-8 text-lg font-light drop-shadow-md">
-            읽고 싶은 원서가 있나요? <br/>
+            읽고 싶은 해외 문학 작품이 있나요? <br/>
             직접 등록하고, 다양한 번역의 결을 비교해보세요.
           </p>
           
@@ -253,7 +237,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* 2. 탭 & 검색 */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
         <div className="flex gap-2 overflow-x-auto w-full md:w-auto pb-2 scrollbar-hide">
           {CATEGORIES.map((cat) => (
@@ -282,7 +265,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* 3. 책 리스트 */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-x-6 gap-y-12">
         {filteredBooks.map((book) => (
           <BookCard 

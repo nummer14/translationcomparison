@@ -7,7 +7,6 @@ export default function Register() {
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-
   const handleRegister = async (e) => {
     e.preventDefault();
 

@@ -5,35 +5,22 @@ import api from "../api/axios";
 export default function MyPage() {
   const [activeTab, setActiveTab] = useState("BOOKMARKS");
   const [user, setUser] = useState(null);
-  
-  // 데이터 상태
   const [bookmarks, setBookmarks] = useState([]);
   const [myComments, setMyComments] = useState([]);
   const [myTranslations, setMyTranslations] = useState([]);
-
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 1. 유저 정보
     api.get("/users/me").then((res) => setUser(res.data)).catch(() => navigate("/login"));
-
-    // 2. 찜 목록
     api.get("/bookmarks/me").then((res) => setBookmarks(res.data));
-
-    // 3. 내 리뷰 목록
     api.get("/users/me/comments").then((res) => setMyComments(res.data));
-
-    // 4. 내 번역본 등록 현황
     api.get("/users/me/translations").then((res) => setMyTranslations(res.data));
-
   }, [navigate]);
 
   if (!user) return <div className="p-10 text-center">Loading...</div>;
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
-      
-      {/* 1. 프로필 카드 */}
       <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-6 mb-10">
         <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center text-3xl">
           👤
@@ -49,7 +36,6 @@ export default function MyPage() {
         </div>
       </div>
 
-      {/* 2. 탭 메뉴 */}
       <div className="flex border-b border-gray-200 mb-8">
         {[
           { key: "BOOKMARKS", label: "❤️ 찜한 책" },
@@ -70,9 +56,6 @@ export default function MyPage() {
         ))}
       </div>
 
-      {/* 3. 탭 내용 */}
-      
-      {/* TAB 1: 찜한 책 */}
       {activeTab === "BOOKMARKS" && (
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
           {bookmarks.length === 0 ? (
@@ -95,7 +78,6 @@ export default function MyPage() {
         </div>
       )}
 
-      {/* TAB 2: 내가 쓴 리뷰 */}
       {activeTab === "REVIEWS" && (
         <div className="space-y-4">
           {myComments.length === 0 ? (
@@ -121,7 +103,6 @@ export default function MyPage() {
         </div>
       )}
 
-      {/* TAB 3: 번역본 등록 현황 */}
       {activeTab === "SUBMISSIONS" && (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           <table className="w-full text-left text-sm">

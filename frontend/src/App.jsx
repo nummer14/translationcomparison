@@ -13,8 +13,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
-        <Navbar />
-        
+        <Navbar />        
         <div className="container mx-auto px-4 py-8">
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -26,7 +25,6 @@ function App() {
             <Route path="/books/:bookId/add" element={<TranslationFormPage />} />
             <Route path="/translations/:translationId" element={<TranslationDetailPage />} />
             <Route path="/login-success" element={<LoginSuccess />} />
-            
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>
@@ -40,7 +38,7 @@ function LoginSuccess() {
   const token = params.get("token");
   if (token) {
     localStorage.setItem("token", token);
-    window.location.href = "/"; // 메인으로 리다이렉트
+    window.location.href = "/";
   }
   return <div className="text-center mt-10">로그인 처리 중...</div>;
 }

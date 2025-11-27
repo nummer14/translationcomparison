@@ -3,20 +3,15 @@ import api from "../api/axios";
 import { useParams, useNavigate } from "react-router-dom";
 
 export default function EditionDetail() {
-  const { id } = useParams(); // URL의 editionId
+  const { id } = useParams();
   const navigate = useNavigate();
-  
-  const [edition, setEdition] = useState(null); // 번역본 정보 (일단 생략하거나 별도 조회 필요)
+  const [edition, setEdition] = useState(null);
   const [reviews, setReviews] = useState([]);
-  
-  // 입력 폼 상태
   const [rating, setRating] = useState(5);
   const [content, setContent] = useState("");
 
   useEffect(() => {
     fetchReviews();
-    // (참고) 번역본 상세 정보 API는 아직 안 만들었으므로, UI에는 "번역본 ID: {id}" 라고만 표시합니다.
-    // 시간이 남으면 EditionController에 @GetMapping("/editions/{id}") 추가해서 가져오면 됩니다.
   }, [id]);
 
   const fetchReviews = async () => {
@@ -52,7 +47,6 @@ export default function EditionDetail() {
 
       <hr />
 
-      {/* 1. 리뷰 작성 폼 */}
       <div style={{ background: "#f0f8ff", padding: "15px", borderRadius: "10px", marginBottom: "20px" }}>
         <h4>리뷰 남기기</h4>
         <form onSubmit={handleSubmit}>
@@ -77,7 +71,6 @@ export default function EditionDetail() {
         </form>
       </div>
 
-      {/* 2. 리뷰 목록 */}
       <h3>💬 사용자 리뷰 ({reviews.length})</h3>
       {reviews.length === 0 ? <p>아직 리뷰가 없습니다. 첫 리뷰를 남겨보세요!</p> : (
         <ul style={{ listStyle: "none", padding: 0 }}>
